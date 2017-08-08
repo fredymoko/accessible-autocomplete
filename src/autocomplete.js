@@ -162,12 +162,16 @@ export default class Autocomplete extends Component {
     if (this.props.confirmOnBlur) {
       newQuery = newState.query || query
       this.props.onConfirm(options[selected])
+      console.log('confirmed handleComponentBlur')
+      console.log('properties', this.props)
     } else {
       newQuery = query
+      console.log('query handleComponentBlur')
     }
     this.setState({
       focused: null,
       menuOpen: newState.menuOpen || false,
+      options: [],
       query: newQuery,
       selected: null
     })
@@ -264,15 +268,18 @@ export default class Autocomplete extends Component {
   }
 
   handleOptionClick (event, index) {
+    // event.preventDefault()
     const selectedOption = this.state.options[index]
     const newQuery = this.templateInputValue(selectedOption)
     this.props.onConfirm(selectedOption)
     this.setState({
       focused: -1,
       menuOpen: false,
+      options: [],
       query: newQuery,
       selected: -1
     })
+    console.log('>>>>>>this', this)
   }
 
   handleOptionMouseDown (event) {
@@ -465,6 +472,8 @@ export default class Autocomplete extends Component {
         {showHint && (
           <span><input className={hintClassName} readonly tabIndex='-1' value={hintValue} /></span>
         )}
+
+        <li>Results length {options.length}</li>
 
         <input
           aria-activedescendant={optionFocused ? `${id}__option--${focused}` : false}
