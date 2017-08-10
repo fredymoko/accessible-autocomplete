@@ -146,7 +146,9 @@ export default class Autocomplete extends Component {
 
   // This template is used when converting from a state.options object into a state.query.
   templateInputValue (value) {
+    console.log('value', value)
     const inputValueTemplate = this.props.templates && this.props.templates.inputValue
+    console.log('inputValue????', inputValueTemplate ? inputValueTemplate(value) : value)
     return inputValueTemplate ? inputValueTemplate(value) : value
   }
 
@@ -280,6 +282,8 @@ export default class Autocomplete extends Component {
       selected: -1
     })
     console.log('>>>>>>this', this)
+
+    //this.handleComponentBlur(event, index)
   }
 
   handleOptionMouseDown (event) {
