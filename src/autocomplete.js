@@ -52,7 +52,7 @@ export default class Autocomplete extends Component {
     placeholder: '',
     onConfirm: () => {},
     confirmOnBlur: true,
-    showNoOptionsFound: false,
+    //showNoOptionsFound: true,
     showAllValues: false,
     required: false,
     tNoResults: () => 'No results found',
@@ -70,7 +70,8 @@ export default class Autocomplete extends Component {
       menuOpen: false,
       options: props.defaultValue ? [props.defaultValue] : [],
       query: props.defaultValue,
-      selected: null
+      selected: null,
+      showNoOptionsFound: false
     }
 
     this.handleComponentBlur = this.handleComponentBlur.bind(this)
@@ -169,6 +170,7 @@ export default class Autocomplete extends Component {
       focused: null,
       menuOpen: newState.menuOpen || false,
       options: [],
+      showNoOptionsFound: false,
       query: newQuery,
       selected: null
     })
@@ -214,12 +216,15 @@ export default class Autocomplete extends Component {
 
     const searchForOptions = showAllValues || (!queryEmpty && queryChanged && queryLongEnough)
     if (searchForOptions) {
+      console.log('>>>searchForOptions')
+      console.log('handleInputChange state', this.state)
       source(query, (options) => {
         const optionsAvailable = options.length > 0
         this.setState({
           menuOpen: optionsAvailable,
           options,
-          selected: (autoselect && optionsAvailable) ? 0 : -1
+          selected: (autoselect && optionsAvailable) ? 0 : -1,
+          showNoOptionsFound: true
         })
       })
     } else if (queryEmpty || !queryLongEnough) {
@@ -274,6 +279,7 @@ export default class Autocomplete extends Component {
       menuOpen: false,
       options: [],
       query: newQuery,
+      showNoOptionsFound: false,
       selected: -1
     })
     console.log('handleOptionClick this state', this.state)
@@ -406,15 +412,16 @@ export default class Autocomplete extends Component {
       tStatusResults,
       dropdownArrow: dropdownArrowFactory
     } = this.props
-    const { focused, hovered, menuOpen, options, query, selected } = this.state
+    const { focused, hovered, menuOpen, options, query, selected, showNoOptionsFound } = this.state
     const autoselect = this.hasAutoselect()
 
     const inputFocused = focused === -1
     const noOptionsAvailable = options.length === 0
     const queryNotEmpty = query.length !== 0
     const queryLongEnough = query.length >= minLength
-    const showNoOptionsFound = this.props.showNoOptionsFound &&
-      inputFocused && noOptionsAvailable && queryNotEmpty && queryLongEnough
+    //const showNoOptionsFound = this.state.showNoOptionsFound
+    //const showNoOptionsFound = this.props.showNoOptionsFound &&
+      //inputFocused && noOptionsAvailable && queryNotEmpty && queryLongEnough
 
     const wrapperClassName = `${cssNamespace}__wrapper`
 
