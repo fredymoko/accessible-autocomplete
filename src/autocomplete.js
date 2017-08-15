@@ -52,7 +52,7 @@ export default class Autocomplete extends Component {
     placeholder: '',
     onConfirm: () => {},
     confirmOnBlur: true,
-    showNoOptionsFound: true,
+    showNoOptionsFound: false,
     showAllValues: false,
     required: false,
     tNoResults: () => 'No results found',
@@ -146,9 +146,7 @@ export default class Autocomplete extends Component {
 
   // This template is used when converting from a state.options object into a state.query.
   templateInputValue (value) {
-    //console.log('value', value)
     const inputValueTemplate = this.props.templates && this.props.templates.inputValue
-    //console.log('inputValue????', inputValueTemplate ? inputValueTemplate(value) : value)
     return inputValueTemplate ? inputValueTemplate(value) : value
   }
 
@@ -164,11 +162,8 @@ export default class Autocomplete extends Component {
     if (this.props.confirmOnBlur) {
       newQuery = newState.query || query
       this.props.onConfirm(options[selected])
-      console.log('confirmed handleComponentBlur')
-      console.log('properties', this.props)
     } else {
       newQuery = query
-      console.log('query handleComponentBlur')
     }
     this.setState({
       focused: null,
@@ -218,11 +213,7 @@ export default class Autocomplete extends Component {
     this.setState({ query })
 
     const searchForOptions = showAllValues || (!queryEmpty && queryChanged && queryLongEnough)
-    console.log('showAllValues', showAllValues, 'notqueryEmpty', !queryEmpty,
-     'queryChanged', queryChanged, 'queryLongEnough', queryLongEnough)
-    console.log('searchForOptions', searchForOptions)
     if (searchForOptions) {
-      console.log('>>searchForOptions???', searchForOptions)
       source(query, (options) => {
         const optionsAvailable = options.length > 0
         this.setState({
@@ -232,7 +223,6 @@ export default class Autocomplete extends Component {
         })
       })
     } else if (queryEmpty || !queryLongEnough) {
-      console.log('>>>reaching queryLongNotEnough or empty???')
       this.setState({
         menuOpen: false,
         options: []
@@ -275,7 +265,7 @@ export default class Autocomplete extends Component {
   }
 
   handleOptionClick (event, index) {
-    // event.preventDefault()
+    event.preventDefault()
     const selectedOption = this.state.options[index]
     const newQuery = this.templateInputValue(selectedOption)
     this.props.onConfirm(selectedOption)
@@ -286,9 +276,7 @@ export default class Autocomplete extends Component {
       query: newQuery,
       selected: -1
     })
-    console.log('>>>>>>this', this)
-
-    //this.handleComponentBlur(event, index)
+    console.log('handleOptionClick this state', this.state)
   }
 
   handleOptionMouseDown (event) {
