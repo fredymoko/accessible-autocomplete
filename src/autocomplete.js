@@ -224,7 +224,7 @@ export default class Autocomplete extends Component {
           menuOpen: optionsAvailable,
           options,
           selected: (autoselect && optionsAvailable) ? 0 : -1,
-          showNoOptionsFound: true
+          showNoOptionsFound: !optionsAvailable && true
         })
       })
     } else if (queryEmpty || !queryLongEnough) {
@@ -414,14 +414,6 @@ export default class Autocomplete extends Component {
     } = this.props
     const { focused, hovered, menuOpen, options, query, selected, showNoOptionsFound } = this.state
     const autoselect = this.hasAutoselect()
-
-    const inputFocused = focused === -1
-    const noOptionsAvailable = options.length === 0
-    const queryNotEmpty = query.length !== 0
-    const queryLongEnough = query.length >= minLength
-    //const showNoOptionsFound = this.state.showNoOptionsFound
-    //const showNoOptionsFound = this.props.showNoOptionsFound &&
-      //inputFocused && noOptionsAvailable && queryNotEmpty && queryLongEnough
 
     const wrapperClassName = `${cssNamespace}__wrapper`
 
