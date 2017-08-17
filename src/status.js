@@ -73,7 +73,7 @@ export default class Status extends Component {
       }}
     >
       {content}
-      <span>{bump ? ',' : ',,'}</span>
+      <span aria-hidden='true'>{bump ? ',' : ',,'}</span>
     </div>
   }
 }
