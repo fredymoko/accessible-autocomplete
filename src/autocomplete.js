@@ -452,11 +452,14 @@ export default class Autocomplete extends Component {
       }
     }
 
+    console.log('menuIsVisible', menuIsVisible)
+
     return (
       <div className={wrapperClassName} onKeyDown={this.handleKeyDown}>
         <Status
           length={options.length}
           queryLength={query.length}
+          menuIsVisible={menuIsVisible}
           minQueryLength={minLength}
           selectedOption={this.templateInputValue(options[selected])}
           tQueryTooShort={tStatusQueryTooShort}

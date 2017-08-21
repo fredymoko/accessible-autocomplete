@@ -30,6 +30,7 @@ export default class Status extends Component {
     const {
       length,
       queryLength,
+      menuIsVisible,
       minQueryLength,
       selectedOption,
       tQueryTooShort,
@@ -49,6 +50,8 @@ export default class Status extends Component {
     let content = null
     if (queryTooShort) {
       content = tQueryTooShort(minQueryLength)
+    } else if (!menuIsVisible && noResults) {
+      content = selectedOption + ' selected'
     } else if (noResults) {
       content = tNoResults()
     } else {
