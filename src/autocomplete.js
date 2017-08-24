@@ -147,6 +147,7 @@ export default class Autocomplete extends Component {
 
   // This template is used when converting from a state.options object into a state.query.
   templateInputValue (value) {
+    //console.log('>>>>>templateInputValue value', value)
     const inputValueTemplate = this.props.templates && this.props.templates.inputValue
     return inputValueTemplate ? inputValueTemplate(value) : value
   }
@@ -211,13 +212,13 @@ export default class Autocomplete extends Component {
     const queryEmpty = query.length === 0
     const queryChanged = this.state.query.length !== query.length
     const queryLongEnough = query.length >= minLength
+    console.log('handleInputChange query', query)
+    console.log('templateInput with query', this.templateInputValue(query))
 
     this.setState({ query })
 
     const searchForOptions = showAllValues || (!queryEmpty && queryChanged && queryLongEnough)
     if (searchForOptions) {
-      console.log('>>>searchForOptions')
-      console.log('handleInputChange state', this.state)
       source(query, (options) => {
         const optionsAvailable = options.length > 0
         this.setState({
@@ -282,7 +283,6 @@ export default class Autocomplete extends Component {
       showNoOptionsFound: false,
       selected: -1
     })
-    console.log('handleOptionClick this state', this.state)
   }
 
   handleOptionMouseDown (event) {
@@ -413,7 +413,13 @@ export default class Autocomplete extends Component {
       dropdownArrow: dropdownArrowFactory
     } = this.props
     const { focused, hovered, menuOpen, options, query, selected, showNoOptionsFound } = this.state
+    /*console.log('focused', focused, 'hovered', hovered, 'menuOpen', menuOpen,
+      'options', options, 'query', query, 'selected', selected,
+      'showNoOptionsFound', showNoOptionsFound)*/
     const autoselect = this.hasAutoselect()
+    if (query && !menuOpen) {
+      console.log('element references', query)
+    }
 
     const wrapperClassName = `${cssNamespace}__wrapper`
 
@@ -433,6 +439,8 @@ export default class Autocomplete extends Component {
 
     const hintClassName = `${cssNamespace}__hint`
     const selectedOptionText = this.templateInputValue(options[selected])
+    console.log('~~~~render templateInputValue', this.templateInputValue(options))
+    //console.log('~~~~render selected', selected)
     const optionBeginsWithQuery = selectedOptionText &&
       selectedOptionText.toLowerCase().indexOf(query.toLowerCase()) === 0
     const hintValue = (optionBeginsWithQuery && autoselect)
@@ -452,7 +460,7 @@ export default class Autocomplete extends Component {
       }
     }
 
-    console.log('menuIsVisible', menuIsVisible)
+    console.log('selectedOption', selectedOptionText)
 
     return (
       <div className={wrapperClassName} onKeyDown={this.handleKeyDown}>

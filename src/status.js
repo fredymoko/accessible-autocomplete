@@ -51,7 +51,7 @@ export default class Status extends Component {
     if (queryTooShort) {
       content = tQueryTooShort(minQueryLength)
     } else if (!menuIsVisible && noResults) {
-      content = selectedOption + ' selected'
+      content = 'selected'
     } else if (noResults) {
       content = tNoResults()
     } else {
